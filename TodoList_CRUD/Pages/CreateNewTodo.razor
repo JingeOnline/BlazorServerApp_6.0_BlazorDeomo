@@ -1,0 +1,17 @@
+﻿@using TodoList_CRUD.Data
+
+<div>
+    <div class="mb-3">
+        <label for="todo-content">Content</label>
+        <InputText id="todo-content" @bind-Value="Todo.Content" class="form-control"></InputText>
+    </div>
+    <div class="mb-3">
+        <label for="todo-due-time">DueTime</label>
+        <InputDate id="todo-due-time" @bind-Value="Todo.DueTime" class="form-control" Type="InputDateType.DateTimeLocal"></InputDate>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public TodoModel Todo { get; set; }
+}

@@ -1,0 +1,151 @@
+﻿@page "/todo"
+
+@using TodoList_CRUD.Data
+@inject TodoService TodoService
+
+
+<h3>TodoList</h3>
+
+
+<p>Listing the todo task be scheduled.</p>
+
+<br />
+<div class="input-group mb-3">
+    <input type="text" class="form-control" placeholder="Search content" aria-label="Recipient's username" aria-describedby="basic-addon2"
+    @bind="searchText" @bind:event="oninput">
+    <button class="btn btn-success input-group-text" onclick="@search">Search</button>
+</div>
+
+<br />
+
+@if (todoList == null || todoList.Count == 0)
+{
+    <p><em>No Todo task be found.</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Content</th>
+                <th>CreateTime</th>
+                <th>DueTime</th>
+                <th>IsCompleted</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var todo in todoList)
+            {
+                <tr>
+                    <td>@todo.Content</td>
+                    <td>@todo.CreateTime</td>
+                    <td>@todo.DueTime</td>
+                    <td>@todo.IsCompleted</td>
+                    <td>
+                        <button class="btn btn-primary" onclick="@(()=>OnUpdateTodoButtonClick(todo))">Edit</button>
+                        <button class="btn btn-danger" onclick="@(()=>DeleteTodo(todo))">Delete</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+<button class="btn btn-success" onclick="@OnAddNewTodoButtonClick">
+    <span class="oi oi-plus" aria-hidden="true"></span> Create New
+</button>
+
+@* 用于创建新的Todo *@
+<EditForm Model="@todoCreated" OnValidSubmit="@createNewTodo">
+    @* 表示启用数据验证 *@
+    <DataAnnotationsValidator></DataAnnotationsValidator>
+    <PopupModal @ref="popupCreate">
+        <Title>Create New Todo</Title>
+        <Body>
+            <CreateNewTodo Todo="@todoCreated"></CreateNewTodo>
+            @* 把所有的验证信息统一显示到一个地方 *@
+            <ValidationSummary></ValidationSummary>
+        </Body>
+        <Footer>
+            <button type="submit" class="btn btn-primary">Create</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="() => popupCreate.Close()">Cancel</button>
+        </Footer>
+    </PopupModal>
+</EditForm>
+
+@* 用户更新Todo *@
+<EditForm Model="@todoUpdated" OnValidSubmit="@updateTodo">
+    @* 表示启用数据验证 *@
+    <DataAnnotationsValidator></DataAnnotationsValidator>
+    <PopupModal @ref="popupUpdate">
+        <Title>Update Todo</Title>
+        <Body>
+            <UpdateTodo Todo="@todoUpdated"></UpdateTodo>
+            @* 把所有的验证信息统一显示到一个地方 *@
+            <ValidationSummary></ValidationSummary>
+        </Body>
+        <Footer>
+            <button type="submit" class="btn btn-primary">Save</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="() => popupUpdate.Close()">Cancel</button>
+        </Footer>
+    </PopupModal>
+</EditForm>
+
+@code {
+    private List<TodoModel> todoList;
+    private string searchText { get; set; }
+
+    protected override void OnInitialized()
+    {
+        todoList = TodoService.GetToDoByContent();
+        base.OnInitialized();
+    }
+
+    private void search()
+    {
+        todoList = TodoService.GetToDoByContent(searchText);
+    }
+
+    #region 增
+    private PopupModal popupCreate { get; set; }
+    TodoModel todoCreated = new TodoModel();
+
+    private void OnAddNewTodoButtonClick()
+    {
+        popupCreate.Open();
+    }
+
+    private void createNewTodo()
+    {
+        TodoService.CreateNewTodo(new TodoModel(todoCreated.Content, todoCreated.DueTime));
+        popupCreate.Close();
+        todoCreated = new TodoModel();
+    }
+    #endregion
+
+    #region 改
+    private PopupModal popupUpdate { get; set; }
+    TodoModel todoUpdated = new TodoModel();
+    private async void OnUpdateTodoButtonClick(TodoModel todo)
+    {
+        //这里要传值，不能传引用，否则即使没有保存。对象中的值也被更改了。
+        todoUpdated.Id = todo.Id;
+        todoUpdated.Content = todo.Content;
+        todoUpdated.DueTime = todo.DueTime;
+        todoUpdated.IsCompleted = todo.IsCompleted;
+        popupUpdate.Open();
+    }
+    private void updateTodo()
+    {
+        TodoService.UpdateTodo(todoUpdated);
+        popupUpdate.Close();
+    }
+    #endregion
+
+    private void DeleteTodo(TodoModel todo)
+    {
+        TodoService.DeleteTodo(todo);
+        //手动刷新页面
+        StateHasChanged();
+    }
+}
