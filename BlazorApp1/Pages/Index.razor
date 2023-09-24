@@ -16,8 +16,11 @@ This code is from Pages/Index.razor
     //把一个字符串作为为HTML代码输出到页面中。
     string text = "<h2>This is a h2 element from C# code</h2>";
 
+    //启动一个计时器，每秒钟更新一次页面。
     private string datetime;
     private Timer timer;
+
+    //不使用OnInitialized是因为，当前主页会被二次渲染，方法会被调用两次，还是会创建两个Timer实例。
     protected override void OnAfterRender(bool firstRender)
     {
         if (firstRender)
@@ -44,6 +47,8 @@ This code is from Pages/Index.razor
         });
     }
 
+    //释放资源，如果不手动释放。则每次载入当前页面就会创建一个Timer的实例。
+    //该方法在浏览器刷新的情况下不起作用，每次刷新都会创建一个实例。暂时不知道怎么解决。
     public void Dispose()
     {
         timer?.Dispose();
