@@ -126,7 +126,7 @@ else
     #region 改
     private PopupModal popupUpdate { get; set; }
     TodoModel todoUpdated = new TodoModel();
-    private async void OnUpdateTodoButtonClick(TodoModel todo)
+    private void OnUpdateTodoButtonClick(TodoModel todo)
     {
         //这里要传值，不能传引用，否则即使没有保存。对象中的值也被更改了。
         todoUpdated.Id = todo.Id;

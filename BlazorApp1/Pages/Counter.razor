@@ -15,4 +15,8 @@
     {
         currentCount++;
     }
+    protected override void OnInitialized()
+    {
+        Console.WriteLine("Counter OnInitialized run at: " + DateTime.Now.ToString());
+    }
 }
