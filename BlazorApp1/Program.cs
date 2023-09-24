@@ -1,8 +1,8 @@
-using BlazorApp1.Data;
+using TimerUpdate.Data;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 
-namespace BlazorApp1
+namespace TimerUpdate
 {
     public class Program
     {

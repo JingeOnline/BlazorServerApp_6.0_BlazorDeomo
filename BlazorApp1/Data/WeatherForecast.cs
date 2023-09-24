@@ -1,4 +1,4 @@
-namespace BlazorApp1.Data
+namespace TimerUpdate.Data
 {
     public class WeatherForecast
     {
