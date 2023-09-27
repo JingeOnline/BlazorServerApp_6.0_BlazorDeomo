@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TimerUpdate", "BlazorApp1\T
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TodoList_CRUD", "TodoList_CRUD\TodoList_CRUD.csproj", "{C0111560-1EEF-4DCE-8A2F-AA5D9F825F4E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthenticationAndAuthorization", "AuthenticationAndAuthorization\AuthenticationAndAuthorization.csproj", "{029A4047-1A15-4234-B53D-11AE008574F8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{C0111560-1EEF-4DCE-8A2F-AA5D9F825F4E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C0111560-1EEF-4DCE-8A2F-AA5D9F825F4E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C0111560-1EEF-4DCE-8A2F-AA5D9F825F4E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{029A4047-1A15-4234-B53D-11AE008574F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{029A4047-1A15-4234-B53D-11AE008574F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{029A4047-1A15-4234-B53D-11AE008574F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{029A4047-1A15-4234-B53D-11AE008574F8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

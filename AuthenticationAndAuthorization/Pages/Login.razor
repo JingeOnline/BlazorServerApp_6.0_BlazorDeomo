@@ -1,0 +1,53 @@
+﻿@page "/login"
+@using AuthenticationAndAuthorization.Authentication;
+ 
+@inject UserAccountService userAccountService
+@inject AuthenticationStateProvider authStateProvier
+@inject IJSRuntime js
+@inject NavigationManager navManager
+
+
+<div class="row">
+    <div class="col-lg-4 offset-lg-4 pt-4 pb-4 border">
+        <div class="mb-3 text-center">
+            <h3>LOGIN</h3>
+        </div>
+        <div class="mb-3">
+            <label>User Name</label>
+            <input @bind="model.Username" class="form-control" placeholder="User Name" />
+        </div>
+        <div class="mb-3">
+            <label>Password</label>
+            <input @bind="model.Password" type="password" class="form-control" placeholder="Password" />
+        </div>
+        <div class="mb-3 d-grid gap-2">
+            <button @onclick="Authenticate" class="btn btn-primary">Login</button>
+        </div>
+    </div>
+</div>
+
+
+@code {
+    private class LoginModel
+    {
+        public string Username { get; set; }
+        public string Password { get; set; }
+    }
+
+    private LoginModel model = new LoginModel();
+
+    private async Task Authenticate()
+    {
+        var userAccount = userAccountService.GetAccountByUsername(model.Username);
+        if(userAccount==null || userAccount.Password!=model.Password)
+        {
+            await js.InvokeVoidAsync("alert","Invalid Username or Password.");
+            return;
+        }
+
+        var auStateProvider = (AuStateProvider)authStateProvier;
+        var userSession = new UserSession() { UserName = userAccount.UserName, Role = userAccount.Role };
+        await auStateProvider.UpdateAuthenticationState(userSession);
+        navManager.NavigateTo("/",true);
+    }
+}
